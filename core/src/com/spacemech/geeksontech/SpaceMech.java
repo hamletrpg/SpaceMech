@@ -4,15 +4,18 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.spacemech.geeksontech.views.MainGame;
 
 public class SpaceMech extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	
+
+	private MainGame mainGame;
+	static final float PPM = 100;
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		mainGame = new MainGame(this);
+
 	}
 
 	@Override
