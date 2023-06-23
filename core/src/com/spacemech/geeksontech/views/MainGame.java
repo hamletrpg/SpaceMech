@@ -48,6 +48,7 @@ public class MainGame implements Screen {
         engine.addSystem(new PlayerControlSystem(controller));
 
         createPlayer();
+        createEnemy(40, 40);
 
         Gdx.input.setInputProcessor(controller);
     }
@@ -60,10 +61,11 @@ public class MainGame implements Screen {
         CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
         TypeComponent type = engine.createComponent(TypeComponent.class);
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
+        HealthComponent health = engine.createComponent(HealthComponent.class);
 
-        b2dBodyComponent.body = createOval(10, 1, 1, true);
+        b2dBodyComponent.body = createOval(15, 1, 1, true);
 
-        position.position.set(10, 10, 0);
+        position.position.set(15, 1, 0);
         type.type = TypeComponent.PLAYER;
         stateComponent.set(StateComponent.STATE_NORMAL);
         b2dBodyComponent.body.setUserData(entity);
@@ -74,6 +76,36 @@ public class MainGame implements Screen {
         entity.add(collisionComponent);
         entity.add(stateComponent);
         entity.add(type);
+        entity.add(health);
+
+        engine.addEntity(entity);
+
+    }
+
+    public void createEnemy(int x, int y) {
+        Entity entity = engine.createEntity();
+        B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
+        TransformComponent position = engine.createComponent(TransformComponent.class);
+        EnemyComponent enemy = engine.createComponent(EnemyComponent.class);
+        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
+        TypeComponent type = engine.createComponent(TypeComponent.class);
+        StateComponent stateComponent = engine.createComponent(StateComponent.class);
+        HealthComponent health = engine.createComponent(HealthComponent.class);
+
+        b2dBodyComponent.body = createOval(10, 10, 1, false);
+
+        position.position.set(10, 10, 0);
+        type.type = TypeComponent.ENEMY;
+        stateComponent.set(StateComponent.STATE_NORMAL);
+        b2dBodyComponent.body.setUserData(entity);
+
+        entity.add(b2dBodyComponent);
+        entity.add(position);
+        entity.add(enemy);
+        entity.add(collisionComponent);
+        entity.add(stateComponent);
+        entity.add(type);
+        entity.add(health);
 
         engine.addEntity(entity);
 
