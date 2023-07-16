@@ -10,12 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.B2dContactListener;
+import com.spacemech.geeksontech.BodyFactory;
+import com.spacemech.geeksontech.SpaceMech;
 import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
-import com.spacemech.geeksontech.systems.CollisionSystem;
-import com.spacemech.geeksontech.systems.PhysicsDebugSystem;
-import com.spacemech.geeksontech.systems.PhysicsSystem;
-import com.spacemech.geeksontech.systems.PlayerControlSystem;
+import com.spacemech.geeksontech.systems.*;
 
 
 public class MainGame implements Screen {
@@ -24,13 +23,18 @@ public class MainGame implements Screen {
     private SpriteBatch spriteBatch;
     private PooledEngine engine;
 
+    private BodyFactory bodyFactory;
     private OrthographicCamera camera;
-    @Override
-    public void show(){
+    private SpaceMech game;
+
+    public MainGame(SpaceMech spaceMech) {
+        game = spaceMech;
+
         controller = new KeyboardController();
         world = new World(new Vector2(0, 0), true);
         world.setContactListener(new B2dContactListener());
-
+        engine = new PooledEngine();
+        bodyFactory = BodyFactory.getInstance(world, engine);
         float PixelsPerMeter = 32.0f;
         float WorldWidth = Gdx.graphics.getWidth()/PixelsPerMeter;
         float WorldHeight = Gdx.graphics.getHeight()/PixelsPerMeter;
@@ -41,106 +45,22 @@ public class MainGame implements Screen {
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
 
-        engine = new PooledEngine();
+
         engine.addSystem(new PhysicsSystem(world));
         engine.addSystem(new PhysicsDebugSystem(world, camera));
         engine.addSystem(new CollisionSystem());
-        engine.addSystem(new PlayerControlSystem(controller));
+        engine.addSystem(new BulletSystem(bodyFactory));
+        engine.addSystem(new PlayerControlSystem(controller, bodyFactory));
 
-        createPlayer();
-        createEnemy(40, 40);
 
+        bodyFactory.createPlayer();
+//        bodyFactory.createEnemy(40, 40);
+    }
+    @Override
+    public void show(){
         Gdx.input.setInputProcessor(controller);
     }
 
-    public void createPlayer() {
-        Entity entity = engine.createEntity();
-        B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
-        TransformComponent position = engine.createComponent(TransformComponent.class);
-        PlayerComponent player = engine.createComponent(PlayerComponent.class);
-        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
-        TypeComponent type = engine.createComponent(TypeComponent.class);
-        StateComponent stateComponent = engine.createComponent(StateComponent.class);
-        HealthComponent health = engine.createComponent(HealthComponent.class);
-
-        b2dBodyComponent.body = createOval(15, 1, 1, true);
-
-        position.position.set(15, 1, 0);
-        type.type = TypeComponent.PLAYER;
-        stateComponent.set(StateComponent.STATE_NORMAL);
-        b2dBodyComponent.body.setUserData(entity);
-
-        entity.add(b2dBodyComponent);
-        entity.add(position);
-        entity.add(player);
-        entity.add(collisionComponent);
-        entity.add(stateComponent);
-        entity.add(type);
-        entity.add(health);
-
-        engine.addEntity(entity);
-
-    }
-
-    public void createEnemy(int x, int y) {
-        Entity entity = engine.createEntity();
-        B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
-        TransformComponent position = engine.createComponent(TransformComponent.class);
-        EnemyComponent enemy = engine.createComponent(EnemyComponent.class);
-        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
-        TypeComponent type = engine.createComponent(TypeComponent.class);
-        StateComponent stateComponent = engine.createComponent(StateComponent.class);
-        HealthComponent health = engine.createComponent(HealthComponent.class);
-
-        b2dBodyComponent.body = createOval(10, 10, 1, false);
-
-        position.position.set(10, 10, 0);
-        type.type = TypeComponent.ENEMY;
-        stateComponent.set(StateComponent.STATE_NORMAL);
-        b2dBodyComponent.body.setUserData(entity);
-
-        entity.add(b2dBodyComponent);
-        entity.add(position);
-        entity.add(enemy);
-        entity.add(collisionComponent);
-        entity.add(stateComponent);
-        entity.add(type);
-        entity.add(health);
-
-        engine.addEntity(entity);
-
-    }
-
-    private Body createOval(float x, float y, float w, boolean dynamic){
-        // create a definition
-        BodyDef boxBodyDef = new BodyDef();
-        if(dynamic){
-            boxBodyDef.type = BodyDef.BodyType.DynamicBody;
-        }else{
-            boxBodyDef.type = BodyDef.BodyType.StaticBody;
-        }
-
-        boxBodyDef.position.x = x;
-        boxBodyDef.position.y = y;
-        boxBodyDef.fixedRotation = true;
-
-        //create the body to attach said definition
-        Body boxBody = world.createBody(boxBodyDef);
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(w /2);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = circleShape;
-        fixtureDef.density = 10f;
-        fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0f;
-
-        boxBody.createFixture(fixtureDef);
-        circleShape.dispose();
-
-        return boxBody;
-
-    }
 
     @Override
     public void render(float delta) {

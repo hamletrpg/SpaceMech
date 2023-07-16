@@ -12,7 +12,7 @@ public class SpaceMech extends Game {
 	static final float PPM = 100;
 	@Override
 	public void create () {
-		this.setScreen(new MainGame());
+		this.setScreen(new MainGame(this));
 	}
 	
 	@Override
