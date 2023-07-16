@@ -54,7 +54,7 @@ public class MainGame implements Screen {
 
 
         bodyFactory.createPlayer();
-//        bodyFactory.createEnemy(40, 40);
+        bodyFactory.createEnemy(40, 40);
     }
     @Override
     public void show(){

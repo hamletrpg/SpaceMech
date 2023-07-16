@@ -46,6 +46,11 @@ public class PhysicsSystem extends IteratingSystem {
                 transformComponentInsideLoop.position.x = position.x;
                 transformComponentInsideLoop.position.y = position.y;
                 transformComponentInsideLoop.rotation = b2dBodyComponentInsideLoop.body.getAngle() * MathUtils.radiansToDegrees;
+                if(b2dBodyComponentInsideLoop.isDead) {
+                    System.out.println("removing entity");
+                    world.destroyBody(b2dBodyComponentInsideLoop.body);
+                    getEngine().removeEntity(entity);
+                }
             }
         }
         bodiesQueue.clear();

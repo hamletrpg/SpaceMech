@@ -13,7 +13,7 @@ public class BodyFactory {
       public PooledEngine engine;
       public Entity player;
 
-      private final float DEGTORAD = 0.0174533f;
+//      private final float DEGTORAD = 0.0174533f;
 
       private BodyFactory(World world, PooledEngine engine) {
 
@@ -31,24 +31,50 @@ public class BodyFactory {
           return  thisInstance;
       }
 
-      public Body createFigure() {
-          BodyDef bdef = new BodyDef();
-          bdef.position.set(32 / SpaceMech.PPM, 32 / SpaceMech.PPM);
-          bdef.type = BodyDef.BodyType.DynamicBody;
-          b2body = world.createBody(bdef);
-          FixtureDef fdef = new FixtureDef();
+//      public Body createFigure() {
+//          BodyDef bdef = new BodyDef();
+//          bdef.position.set(32 / SpaceMech.PPM, 32 / SpaceMech.PPM);
+//          bdef.type = BodyDef.BodyType.DynamicBody;
+//          b2body = world.createBody(bdef);
+//          FixtureDef fdef = new FixtureDef();
+//
+//          CircleShape shape = new CircleShape();
+//          shape.setRadius(6 / SpaceMech.PPM);
+//
+//          fdef.shape = shape;
+//          b2body.createFixture(fdef).setUserData(this);
+//
+//          b2body.createFixture(fdef);
+//          return b2body;
+//      }
 
-          CircleShape shape = new CircleShape();
-          shape.setRadius(6 / SpaceMech.PPM);
+    public void createEnemy(int x, int y) {
+        Entity entity = engine.createEntity();
+        B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
+        TransformComponent position = engine.createComponent(TransformComponent.class);
+        EnemyComponent enemy = engine.createComponent(EnemyComponent.class);
+        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
+        TypeComponent type = engine.createComponent(TypeComponent.class);
+        StateComponent stateComponent = engine.createComponent(StateComponent.class);
+        HealthComponent health = engine.createComponent(HealthComponent.class);
 
-          fdef.shape = shape;
-          b2body.createFixture(fdef).setUserData(this);
+        b2dBodyComponent.body = createOval(10, 10, 1, false);
 
-          b2body.createFixture(fdef);
-          return b2body;
-      }
+        position.position.set(10, 10, 0);
+        type.type = TypeComponent.ENEMY;
+        stateComponent.set(StateComponent.STATE_NORMAL);
+        b2dBodyComponent.body.setUserData(entity);
 
+        entity.add(b2dBodyComponent);
+        entity.add(position);
+        entity.add(enemy);
+        entity.add(collisionComponent);
+        entity.add(stateComponent);
+        entity.add(type);
+        entity.add(health);
 
+        engine.addEntity(entity);
+    }
 
     public void createPlayer() {
         Entity entity = engine.createEntity();

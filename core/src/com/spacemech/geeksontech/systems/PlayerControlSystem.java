@@ -60,6 +60,10 @@ public class PlayerControlSystem extends IteratingSystem {
             b2body.body.setLinearVelocity(0, 0);
         }
 
+        if (player.timeSinceLastShot > 0) {
+            player.timeSinceLastShot -= deltaTyime;
+        }
+
         if(controller.isMouse1Down) {
             if(player.timeSinceLastShot <= 0) {
                 bodyFactory.createBullet(
