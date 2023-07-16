@@ -62,11 +62,10 @@ public class PlayerControlSystem extends IteratingSystem {
 
         if(controller.isMouse1Down) {
             if(player.timeSinceLastShot <= 0) {
-                Vector3 mousePosition = new Vector3(controller.mouseLocation.x, controller.mouseLocation.y, 0);
                 bodyFactory.createBullet(
                         b2body.body.getPosition().x,
                         b2body.body.getPosition().y,
-                        0, 1, BulletComponent.Owner.PLAYER
+                        0, 10, BulletComponent.Owner.PLAYER
                 );
             }
         }
