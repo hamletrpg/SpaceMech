@@ -115,14 +115,13 @@ public class BodyFactory {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
-        TextureComponent texture = engine.createComponent(TextureComponent.class);
         BulletComponent bullet = engine.createComponent(BulletComponent.class);
         TypeComponent type = engine.createComponent(TypeComponent.class);
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
 
         bullet.owner = owner;
 
-        b2dBodyComponent.body = this.makeCirclePolyBody(x, y, 0.5f, BodyDef.BodyType.DynamicBody, true);
+        b2dBodyComponent.body = makeCirclePolyBody(x, y, 0.5f, BodyDef.BodyType.DynamicBody, true);
 
         b2dBodyComponent.body.setBullet(true);
         makeAllFixtureSensors(b2dBodyComponent.body);
@@ -137,7 +136,6 @@ public class BodyFactory {
         entity.add(position);
         entity.add(stateComponent);
         entity.add(b2dBodyComponent);
-        entity.add(texture);
         entity.add(type);
         engine.addEntity(entity);
 
@@ -154,6 +152,13 @@ public class BodyFactory {
           Body boxBody = world.createBody(boxBodyDef);
           CircleShape circleShape = new CircleShape();
           circleShape.setRadius(radius/2);
+            FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.density = 10f;
+        fixtureDef.friction = 0.5f;
+        fixtureDef.restitution = 0f;
+
+        boxBody.createFixture(fixtureDef);
           circleShape.dispose();
           return boxBody;
     }

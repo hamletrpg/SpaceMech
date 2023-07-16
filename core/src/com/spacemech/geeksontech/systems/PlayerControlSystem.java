@@ -67,6 +67,7 @@ public class PlayerControlSystem extends IteratingSystem {
                         b2body.body.getPosition().y,
                         0, 10, BulletComponent.Owner.PLAYER
                 );
+                player.timeSinceLastShot = player.shootDelay;
             }
         }
     }
