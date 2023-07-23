@@ -7,12 +7,12 @@ import com.spacemech.geeksontech.components.CollisionComponent;
 public class B2dContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
-        System.out.println("Contact");
+        System.out.println("From B2dContactListener class: Contact");
 
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        System.out.println(fixtureA.getBody().getType() + " hat hit + " + fixtureB.getBody().getType());
+        System.out.println("From B2dContactListener class: " + fixtureA.getBody().getType() + " hat hit " + fixtureB.getBody().getType());
 
         if (fixtureA.getBody().getUserData() instanceof Entity) {
             Entity entity = (Entity) fixtureA.getBody().getUserData();
@@ -41,7 +41,7 @@ public class B2dContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        System.out.println("Contact end");
+        System.out.println("From B2dContactListener class: Contact end");
     }
     @Override
     public void preSolve (Contact contact, Manifold oldManifold) {
