@@ -7,10 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.spacemech.geeksontech.BodyFactory;
-import com.spacemech.geeksontech.components.B2dBodyComponent;
-import com.spacemech.geeksontech.components.BulletComponent;
-import com.spacemech.geeksontech.components.PlayerComponent;
-import com.spacemech.geeksontech.components.StateComponent;
+import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
 import com.spacemech.geeksontech.controller.KeyboardController;
 
@@ -20,6 +17,7 @@ public class PlayerControlSystem extends IteratingSystem {
     ComponentMapper<B2dBodyComponent> b2dBodyComponent;
     ComponentMapper<StateComponent> stateComponent;
     KeyboardController controller;
+    ComponentMapper<HealthComponent> playerHealth;
 
     @SuppressWarnings("unchecked")
     public PlayerControlSystem(KeyboardController keyboardController, BodyFactory bodyFact) {
@@ -29,6 +27,7 @@ public class PlayerControlSystem extends IteratingSystem {
         playerComponent = ComponentMapper.getFor(PlayerComponent.class);
         b2dBodyComponent = ComponentMapper.getFor(B2dBodyComponent.class);
         stateComponent = ComponentMapper.getFor(StateComponent.class);
+        playerHealth = ComponentMapper.getFor(HealthComponent.class);
     }
 
     @Override
@@ -36,6 +35,7 @@ public class PlayerControlSystem extends IteratingSystem {
         B2dBodyComponent b2body = b2dBodyComponent.get(entity);
         StateComponent state = stateComponent.get(entity);
         PlayerComponent player = playerComponent.get(entity);
+        HealthComponent playerHealthComp = playerHealth.get(entity);
 
         if (b2body.body.getLinearVelocity().y != 0 && b2body.body.getLinearVelocity().x != 0) {
             state.set(StateComponent.STATE_MOVING);
@@ -58,6 +58,11 @@ public class PlayerControlSystem extends IteratingSystem {
         }
         if (!controller.down && !controller.up && !controller.left && !controller.right) {
             b2body.body.setLinearVelocity(0, 0);
+        }
+
+        if (playerHealthComp.health <= 0) {
+            player.isDead = true;
+            b2body.isDead = true;
         }
 
         if (player.timeSinceLastShot > 0) {

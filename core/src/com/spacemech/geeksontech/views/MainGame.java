@@ -48,13 +48,14 @@ public class MainGame implements Screen {
 
         engine.addSystem(new PhysicsSystem(world));
         engine.addSystem(new PhysicsDebugSystem(world, camera));
-        engine.addSystem(new CollisionSystem());
+
+        engine.addSystem(new EnemySystem(bodyFactory));
         engine.addSystem(new BulletSystem(bodyFactory));
         engine.addSystem(new PlayerControlSystem(controller, bodyFactory));
-
+        engine.addSystem(new CollisionSystem());
 
         bodyFactory.createPlayer();
-        bodyFactory.createEnemy(40, 40);
+        bodyFactory.createEnemy();
     }
     @Override
     public void show(){

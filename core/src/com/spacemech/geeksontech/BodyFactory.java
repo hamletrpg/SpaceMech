@@ -12,6 +12,7 @@ public class BodyFactory {
       public Body b2body;
       public PooledEngine engine;
       public Entity player;
+      public Entity enemy;
 
 //      private final float DEGTORAD = 0.0174533f;
 
@@ -48,7 +49,7 @@ public class BodyFactory {
 //          return b2body;
 //      }
 
-    public void createEnemy(int x, int y) {
+    public void createEnemy() {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -72,7 +73,7 @@ public class BodyFactory {
         entity.add(stateComponent);
         entity.add(type);
         entity.add(health);
-
+        this.enemy = entity;
         engine.addEntity(entity);
     }
 
@@ -137,13 +138,15 @@ public class BodyFactory {
     }
 
     public Entity createBullet(float x, float y, float xVelocity, float yVelocity, BulletComponent.Owner owner) {
-        System.out.println("there goes another butter");
+        System.out.println("there goes another bullet");
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
         BulletComponent bullet = engine.createComponent(BulletComponent.class);
         TypeComponent type = engine.createComponent(TypeComponent.class);
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
+        CollisionComponent collisionComponent = engine.createComponent(CollisionComponent.class);
+
 
         bullet.owner = owner;
 
@@ -159,6 +162,7 @@ public class BodyFactory {
         bullet.yVel = yVelocity;
 
         entity.add(bullet);
+        entity.add(collisionComponent);
         entity.add(position);
         entity.add(stateComponent);
         entity.add(b2dBodyComponent);

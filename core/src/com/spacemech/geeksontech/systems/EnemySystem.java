@@ -34,13 +34,11 @@ public class EnemySystem extends IteratingSystem {
 
         if(enemyComp.enemyType == Type.ENEMYSHIP) {
             // Variable to switch direction of the enemy
-            float distanceFromOrigin = Math.abs(enemyComp.xPostCenter - b2dComp.body.getPosition().x);
+            Math.abs(enemyComp.xPostCenter - b2dComp.body.getPosition().x);
         }
 
-
-
         if (enemyHealthComp.health <= 0) {
-            b2dComp.isDead = true;
+            enemyComp.isDead = true;
         }
 
         if (enemyComp.isDead) {

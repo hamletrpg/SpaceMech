@@ -37,7 +37,10 @@ public class CollisionSystem extends IteratingSystem {
                     switch (type.type) {
                         case TypeComponent.ENEMY:
                             //do player hit enemy thing
-                            System.out.println("Player hit enemy");
+                            System.out.println(playerComp + " Player hit enemy");
+                            HealthComponent health = healthComponent.get(entity);
+                            health.health -= 10;
+                            System.out.println(health.health + " health left");
                             break;
                         case TypeComponent.OTHER:
                             //do player hit other thing
@@ -47,20 +50,25 @@ public class CollisionSystem extends IteratingSystem {
                     collisionComponentToProcess.collisionEntity = null; // collision handled reset component
                 }
             }
-        } else if(thisType.type == TypeComponent.ENEMY) {
+        }
+        else if(thisType.type == TypeComponent.ENEMY) {
+            System.out.println("yeap, hit enemy tho");
             if (collidedEntity != null) {
                 TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
                 if (type != null) {
                     switch (type.type) {
                         case TypeComponent.BULLET:
-                            EnemyComponent enemy = enemyComponent.get(entity);
+//                            EnemyComponent enemy = enemyComponent.get(entity);
                             BulletComponent bullet = bulletComponent.get(collidedEntity);
                             HealthComponent health = healthComponent.get(entity);
                             if (bullet.owner != BulletComponent.Owner.ENEMY) {
                                 bullet.isDead = true;
-
+                                health.health -= 10;
+                                System.out.println("enemy's health " + health.health);
                             }
+                            break;
                     }
+                    collisionComponentToProcess.collisionEntity = null;
                 }
             }
         }
