@@ -5,6 +5,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.components.CollisionComponent;
 
 public class B2dContactListener implements ContactListener {
+
+    public B2dContactListener() {
+
+    }
     @Override
     public void beginContact(Contact contact) {
         System.out.println("From B2dContactListener class: Contact");

@@ -49,7 +49,7 @@ public class BodyFactory {
 //          return b2body;
 //      }
 
-    public void createEnemy() {
+    public Entity createEnemy() {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -75,9 +75,11 @@ public class BodyFactory {
         entity.add(health);
         this.enemy = entity;
         engine.addEntity(entity);
+
+        return entity;
     }
 
-    public void createPlayer() {
+    public Entity createPlayer() {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -104,6 +106,7 @@ public class BodyFactory {
         this.player = entity;
         engine.addEntity(entity);
 
+        return entity;
     }
 
     private Body createOval(float x, float y, float w, boolean dynamic){

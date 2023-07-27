@@ -15,11 +15,11 @@ public class CollisionSystem extends IteratingSystem {
 
     @SuppressWarnings("unchecked")
     public CollisionSystem() {
-        super(Family.all(CollisionComponent.class, PlayerComponent.class).get());
+        super(Family.all(CollisionComponent.class).get());
 
         collisionComponent = ComponentMapper.getFor(CollisionComponent.class);
         playerComponent = ComponentMapper.getFor(PlayerComponent.class);
-        enemyComponent = ComponentMapper.getFor(EnemyComponent.class);
+//        enemyComponent = ComponentMapper.getFor(EnemyComponent.class);
         bulletComponent = ComponentMapper.getFor(BulletComponent.class);
         healthComponent = ComponentMapper.getFor(HealthComponent.class);
     }
@@ -33,26 +33,32 @@ public class CollisionSystem extends IteratingSystem {
             PlayerComponent playerComp = playerComponent.get(entity);
             if (collidedEntity != null) {
                 TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
-                if (type != null) {
+                if (type != null && type.type != TypeComponent.BULLET) {
+                    System.out.println("type.type: " + type.type);
+                    System.out.println("TypeComponent: " + TypeComponent.PLAYER);
                     switch (type.type) {
                         case TypeComponent.ENEMY:
-                            //do player hit enemy thing
                             System.out.println(playerComp + " Player hit enemy");
+                            break;
+                        case TypeComponent.BULLET:
+                            BulletComponent bullet = bulletComponent.get(collidedEntity);
                             HealthComponent health = healthComponent.get(entity);
-                            health.health -= 10;
-                            System.out.println(health.health + " health left");
+                            if (bullet.owner != BulletComponent.Owner.PLAYER) {
+                                bullet.isDead = true;
+                                health.health -= 10;
+                                System.out.println("Player's health " + health.health);
+                            }
                             break;
                         case TypeComponent.OTHER:
-                            //do player hit other thing
                             System.out.println("player hit other");
-                            break; //technically this isn't needed
+                            break;
+                        default:
+                            System.out.println("Player: No matching type found");
                     }
-                    collisionComponentToProcess.collisionEntity = null; // collision handled reset component
+                    collisionComponentToProcess.collisionEntity = null;
                 }
             }
-        }
-        else if(thisType.type == TypeComponent.ENEMY) {
-            System.out.println("yeap, hit enemy tho");
+        }else if(thisType.type == TypeComponent.ENEMY) {
             if (collidedEntity != null) {
                 TypeComponent type = collidedEntity.getComponent(TypeComponent.class);
                 if (type != null) {
@@ -67,10 +73,15 @@ public class CollisionSystem extends IteratingSystem {
                                 System.out.println("enemy's health " + health.health);
                             }
                             break;
+                        default:
+                            System.out.println("Enemy: No matching type found");
                     }
                     collisionComponentToProcess.collisionEntity = null;
                 }
             }
+        }
+        else {
+            collisionComponentToProcess.collisionEntity = null;
         }
     }
 }
