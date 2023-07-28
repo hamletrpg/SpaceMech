@@ -27,7 +27,6 @@ public class MainGame implements Screen {
     private OrthographicCamera camera;
     private SpaceMech game;
     private Entity player;
-    private Entity enemy;
 
     public MainGame(SpaceMech spaceMech) {
         game = spaceMech;
@@ -47,7 +46,8 @@ public class MainGame implements Screen {
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
         player = bodyFactory.createPlayer();
-        enemy = bodyFactory.createEnemy();
+        bodyFactory.createSpawner(15, 10);
+        bodyFactory.createSpawner(5, 10);
 
         engine.addSystem(new PhysicsSystem(world));
         engine.addSystem(new PhysicsDebugSystem(world, camera));
@@ -56,6 +56,7 @@ public class MainGame implements Screen {
         engine.addSystem(new EnemySystem(bodyFactory));
         engine.addSystem(new BulletSystem(bodyFactory));
         engine.addSystem(new PlayerControlSystem(controller, bodyFactory));
+        engine.addSystem(new SpawnerSystem(bodyFactory));
 
     }
     @Override

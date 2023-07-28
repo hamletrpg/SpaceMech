@@ -13,6 +13,8 @@ public class EnemyComponent implements Component, Pool.Poolable {
     public float shootDelay = 0.5f;
     public float timeSinceLastShot = 0f;
     public float xPostCenter = -1;
+    public float xVel = 0;
+    public float yVel = 0;
     public Type enemyType = Type.ENEMYSHIP;
 
     @Override

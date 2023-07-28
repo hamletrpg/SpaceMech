@@ -32,6 +32,8 @@ public class EnemySystem extends IteratingSystem {
         B2dBodyComponent b2dComp = b2dComponent.get(entity);
         HealthComponent enemyHealthComp = enemyHealth.get(entity);
 
+        b2dComp.body.setLinearVelocity(enemyComp.xVel, enemyComp.yVel);
+
         if(enemyComp.enemyType == Type.ENEMYSHIP) {
             // Variable to switch direction of the enemy
             Math.abs(enemyComp.xPostCenter - b2dComp.body.getPosition().x);

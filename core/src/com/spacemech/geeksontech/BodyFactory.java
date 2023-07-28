@@ -49,7 +49,28 @@ public class BodyFactory {
 //          return b2body;
 //      }
 
-    public Entity createEnemy() {
+    public Entity createSpawner(float x, float y) {
+        Entity entity = engine.createEntity();
+        B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
+        TransformComponent position = engine.createComponent(TransformComponent.class);
+        SpawnerComponent spawner = engine.createComponent(SpawnerComponent.class);
+        HealthComponent health = engine.createComponent(HealthComponent.class);
+
+        b2dBodyComponent.body = createOval(x, y, 1, false);
+
+        position.position.set(10, 10, 0);
+        b2dBodyComponent.body.setUserData(entity);
+
+        entity.add(spawner);
+        entity.add(b2dBodyComponent);
+        entity.add(position);
+        entity.add(health);
+        engine.addEntity(entity);
+
+        return entity;
+    }
+
+    public Entity createEnemy(float x, float y, float xVelocity, float yVelocity) {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -59,12 +80,14 @@ public class BodyFactory {
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
         HealthComponent health = engine.createComponent(HealthComponent.class);
 
-        b2dBodyComponent.body = createOval(10, 10, 1, false);
+        b2dBodyComponent.body = createOval(x, y, 1, true);
 
         position.position.set(10, 10, 0);
         type.type = TypeComponent.ENEMY;
         stateComponent.set(StateComponent.STATE_NORMAL);
         b2dBodyComponent.body.setUserData(entity);
+        enemy.xVel = xVelocity;
+        enemy.yVel = yVelocity;
 
         entity.add(b2dBodyComponent);
         entity.add(position);
