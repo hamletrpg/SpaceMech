@@ -5,6 +5,9 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.components.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BodyFactory {
       private static BodyFactory thisInstance;
@@ -12,7 +15,7 @@ public class BodyFactory {
       public Body b2body;
       public PooledEngine engine;
       public Entity player;
-      public Entity enemy;
+       public List<Entity> enemies = new ArrayList<>();
 
 //      private final float DEGTORAD = 0.0174533f;
 
@@ -96,9 +99,9 @@ public class BodyFactory {
         entity.add(stateComponent);
         entity.add(type);
         entity.add(health);
-        this.enemy = entity;
         engine.addEntity(entity);
-
+        enemies.add(entity);
+//        System.out.println("Enemy created " + enemies);
         return entity;
     }
 
