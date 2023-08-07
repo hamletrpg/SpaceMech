@@ -7,13 +7,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.B2dContactListener;
 import com.spacemech.geeksontech.BodyFactory;
 import com.spacemech.geeksontech.SpaceMech;
-import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
 import com.spacemech.geeksontech.systems.*;
 
@@ -28,6 +26,7 @@ public class MainGame implements Screen {
     private OrthographicCamera camera;
     private SpaceMech game;
     private Entity player;
+    private Entity enemy;
 
     public MainGame(SpaceMech spaceMech) {
         game = spaceMech;
@@ -47,8 +46,11 @@ public class MainGame implements Screen {
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
         player = bodyFactory.createPlayer();
-        bodyFactory.createSpawner(15, 10);
-        bodyFactory.createSpawner(5, 10);
+        enemy = bodyFactory.createEnemy(
+                10,
+                10,
+                0, -1
+        );
 
         engine.addSystem(new PhysicsSystem(world));
         engine.addSystem(new PhysicsDebugSystem(world, camera));
@@ -57,8 +59,6 @@ public class MainGame implements Screen {
         engine.addSystem(new EnemySystem(bodyFactory));
         engine.addSystem(new BulletSystem(bodyFactory));
         engine.addSystem(new PlayerControlSystem(controller, bodyFactory));
-        engine.addSystem(new SpawnerSystem(bodyFactory));
-
     }
 
     @Override

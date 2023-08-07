@@ -35,7 +35,7 @@ public class BodyFactory {
           return  thisInstance;
       }
 
-    public Entity createSpawner(float x, float y) {
+    public void createSpawner(float x, float y) {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -53,7 +53,7 @@ public class BodyFactory {
         entity.add(health);
         engine.addEntity(entity);
 
-        return entity;
+//        return entity;
     }
 
     public Entity createEnemy(float x, float y, float xVelocity, float yVelocity) {
@@ -84,7 +84,6 @@ public class BodyFactory {
         entity.add(health);
         engine.addEntity(entity);
         enemies.add(entity);
-//        System.out.println("Enemy created " + enemies);
         return entity;
     }
 

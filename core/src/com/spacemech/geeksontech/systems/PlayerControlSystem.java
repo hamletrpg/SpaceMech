@@ -5,10 +5,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.spacemech.geeksontech.BodyFactory;
 import com.spacemech.geeksontech.components.*;
-import com.spacemech.geeksontech.controller.KeyboardController;
 import com.spacemech.geeksontech.controller.KeyboardController;
 
 public class PlayerControlSystem extends IteratingSystem {

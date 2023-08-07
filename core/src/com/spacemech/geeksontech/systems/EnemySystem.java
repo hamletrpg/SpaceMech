@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.spacemech.geeksontech.components.BulletComponent;
 import com.spacemech.geeksontech.components.EnemyComponent.Type;
 import com.spacemech.geeksontech.BodyFactory;
 import com.spacemech.geeksontech.components.B2dBodyComponent;
@@ -16,6 +17,8 @@ public class EnemySystem extends IteratingSystem {
     private ComponentMapper<B2dBodyComponent> b2dComponent;
     private ComponentMapper<HealthComponent> enemyHealth;
     private BodyFactory bodyFactory;
+    private float timeSinceLastShot;
+    private float shootDelay = 3f;
 
     @SuppressWarnings("unchecked")
     public EnemySystem(BodyFactory bodyFact) {
@@ -38,6 +41,22 @@ public class EnemySystem extends IteratingSystem {
             // Variable to switch direction of the enemy
             Math.abs(enemyComp.xPostCenter - b2dComp.body.getPosition().x);
         }
+
+        if (this.timeSinceLastShot > 0) {
+            this.timeSinceLastShot -= deltaTime;
+        }
+
+        if(this.timeSinceLastShot <= 0) {
+
+            float bulletPadding = 0.7f;
+            bodyFactory.createBullet(
+                        b2dComp.body.getPosition().x,
+                        (b2dComp.body.getPosition().y-bulletPadding),
+                        0, -3, BulletComponent.Owner.ENEMY
+                );
+                this.timeSinceLastShot = this.shootDelay;
+            }
+
 
         if (enemyHealthComp.health <= 0) {
             enemyComp.isDead = true;

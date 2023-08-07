@@ -64,7 +64,6 @@ public class CollisionSystem extends IteratingSystem {
                 if (type != null) {
                     switch (type.type) {
                         case TypeComponent.BULLET:
-//                            EnemyComponent enemy = enemyComponent.get(entity);
                             BulletComponent bullet = bulletComponent.get(collidedEntity);
                             HealthComponent health = healthComponent.get(entity);
                             if (bullet.owner != BulletComponent.Owner.ENEMY) {
