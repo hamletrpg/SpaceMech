@@ -2,6 +2,9 @@ package com.spacemech.geeksontech;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.components.*;
 
@@ -12,12 +15,9 @@ import java.util.List;
 public class BodyFactory {
       private static BodyFactory thisInstance;
       private World world;
-      public Body b2body;
       public PooledEngine engine;
       public Entity player;
        public List<Entity> enemies = new ArrayList<>();
-
-//      private final float DEGTORAD = 0.0174533f;
 
       private BodyFactory(World world, PooledEngine engine) {
 
@@ -34,23 +34,6 @@ public class BodyFactory {
           }
           return  thisInstance;
       }
-
-//      public Body createFigure() {
-//          BodyDef bdef = new BodyDef();
-//          bdef.position.set(32 / SpaceMech.PPM, 32 / SpaceMech.PPM);
-//          bdef.type = BodyDef.BodyType.DynamicBody;
-//          b2body = world.createBody(bdef);
-//          FixtureDef fdef = new FixtureDef();
-//
-//          CircleShape shape = new CircleShape();
-//          shape.setRadius(6 / SpaceMech.PPM);
-//
-//          fdef.shape = shape;
-//          b2body.createFixture(fdef).setUserData(this);
-//
-//          b2body.createFixture(fdef);
-//          return b2body;
-//      }
 
     public Entity createSpawner(float x, float y) {
         Entity entity = engine.createEntity();
