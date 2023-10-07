@@ -97,13 +97,14 @@ public class BodyFactory {
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
         HealthComponent health = engine.createComponent(HealthComponent.class);
 
-        b2dBodyComponent.body = createOval(15, 1, 1, true);
+
 
         position.position.set(15, 1, 0);
         type.type = TypeComponent.PLAYER;
         stateComponent.set(StateComponent.STATE_NORMAL);
-        b2dBodyComponent.body.setUserData(entity);
 
+        b2dBodyComponent.body = createOval(position.position.x, position.position.y, 1, true);
+        b2dBodyComponent.body.setUserData(entity);
         entity.add(b2dBodyComponent);
         entity.add(position);
         entity.add(player);
