@@ -1,25 +1,17 @@
 package com.spacemech.geeksontech;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class BodyFactory {
-    public PooledEngine engine;
 
     // making this class a singleton
     private static BodyFactory thisInstance;
     private World world;
-    private final float DEGTORAD = 0.0174533f;
 
     private BodyFactory(World world) {
         this.world = world;
