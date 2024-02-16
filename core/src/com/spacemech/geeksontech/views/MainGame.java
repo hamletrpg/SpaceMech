@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.B2dContactListener;
 import com.spacemech.geeksontech.BodyFactory;
+import com.spacemech.geeksontech.LevelFactory;
 import com.spacemech.geeksontech.SpaceMech;
 import com.spacemech.geeksontech.controller.KeyboardController;
 import com.spacemech.geeksontech.systems.*;
@@ -18,11 +19,9 @@ import com.spacemech.geeksontech.systems.*;
 
 public class MainGame implements Screen {
     private KeyboardController controller;
-    private World world;
     private SpriteBatch spriteBatch;
     private PooledEngine engine;
-
-    private BodyFactory bodyFactory;
+    private LevelFactory levelFactory;
     private OrthographicCamera camera;
     private SpaceMech game;
     private Entity player;
@@ -32,10 +31,8 @@ public class MainGame implements Screen {
         game = spaceMech;
 
         controller = new KeyboardController();
-        world = new World(new Vector2(0, 0), true);
-        world.setContactListener(new B2dContactListener());
         engine = new PooledEngine();
-        bodyFactory = BodyFactory.getInstance(world, engine);
+        levelFactory = new LevelFactory(engine);
         float PixelsPerMeter = 32.0f;
         float WorldWidth = Gdx.graphics.getWidth()/PixelsPerMeter;
         float WorldHeight = Gdx.graphics.getHeight()/PixelsPerMeter;
@@ -45,20 +42,20 @@ public class MainGame implements Screen {
         camera.update();
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
-        player = bodyFactory.createPlayer();
-        enemy = bodyFactory.createEnemy(
+        player = levelFactory.createPlayer();
+        enemy = levelFactory.createEnemy(
                 10,
                 10,
                 0, -1
         );
 
-        engine.addSystem(new PhysicsSystem(world));
-        engine.addSystem(new PhysicsDebugSystem(world, camera));
+        engine.addSystem(new PhysicsSystem(levelFactory.world));
+        engine.addSystem(new PhysicsDebugSystem(levelFactory.world, camera));
         engine.addSystem(new CollisionSystem());
 
-        engine.addSystem(new EnemySystem(bodyFactory));
-        engine.addSystem(new BulletSystem(bodyFactory));
-        engine.addSystem(new PlayerControlSystem(controller, bodyFactory));
+        engine.addSystem(new EnemySystem(levelFactory));
+        engine.addSystem(new BulletSystem(levelFactory));
+        engine.addSystem(new PlayerControlSystem(controller, levelFactory));
     }
 
     @Override

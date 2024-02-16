@@ -22,7 +22,7 @@ public class B2dContactListener implements ContactListener {
             Entity entity = (Entity) fixtureA.getBody().getUserData();
             entityCollision(entity, fixtureB);
             return;
-        } else if (fixtureA.getBody().getUserData() instanceof Entity) {
+        } else if (fixtureB.getBody().getUserData() instanceof Entity) {
             Entity entity = (Entity) fixtureB.getBody().getUserData();
             entityCollision(entity, fixtureA);
             return;

@@ -6,11 +6,12 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.spacemech.geeksontech.BodyFactory;
+import com.spacemech.geeksontech.LevelFactory;
 import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
 
 public class PlayerControlSystem extends IteratingSystem {
-    private BodyFactory bodyFactory;
+    private LevelFactory levelFactory;
     ComponentMapper<PlayerComponent> playerComponent;
     ComponentMapper<B2dBodyComponent> b2dBodyComponent;
     ComponentMapper<StateComponent> stateComponent;
@@ -18,10 +19,10 @@ public class PlayerControlSystem extends IteratingSystem {
     ComponentMapper<HealthComponent> playerHealth;
 
     @SuppressWarnings("unchecked")
-    public PlayerControlSystem(KeyboardController keyboardController, BodyFactory bodyFact) {
+    public PlayerControlSystem(KeyboardController keyboardController, LevelFactory levelFactory) {
         super(Family.all(PlayerComponent.class).get());
         controller = keyboardController;
-        bodyFactory = bodyFact;
+        this.levelFactory = levelFactory;
         playerComponent = ComponentMapper.getFor(PlayerComponent.class);
         b2dBodyComponent = ComponentMapper.getFor(B2dBodyComponent.class);
         stateComponent = ComponentMapper.getFor(StateComponent.class);
@@ -29,7 +30,7 @@ public class PlayerControlSystem extends IteratingSystem {
     }
 
     @Override
-    protected void processEntity(Entity entity, float deltaTyime) {
+    protected void processEntity(Entity entity, float deltaTime) {
         B2dBodyComponent b2body = b2dBodyComponent.get(entity);
         StateComponent state = stateComponent.get(entity);
         PlayerComponent player = playerComponent.get(entity);
@@ -64,12 +65,12 @@ public class PlayerControlSystem extends IteratingSystem {
         }
 
         if (player.timeSinceLastShot > 0) {
-            player.timeSinceLastShot -= deltaTyime;
+            player.timeSinceLastShot -= deltaTime;
         }
 
         if(controller.isMouse1Down) {
             if(player.timeSinceLastShot <= 0) {
-                bodyFactory.createBullet(
+                levelFactory.createBullet(
                         b2body.body.getPosition().x,
                         b2body.body.getPosition().y,
                         0, 10, BulletComponent.Owner.PLAYER

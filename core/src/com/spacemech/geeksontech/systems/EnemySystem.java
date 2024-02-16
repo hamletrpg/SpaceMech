@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.spacemech.geeksontech.LevelFactory;
 import com.spacemech.geeksontech.components.BulletComponent;
 import com.spacemech.geeksontech.components.EnemyComponent.Type;
 import com.spacemech.geeksontech.BodyFactory;
@@ -16,17 +17,17 @@ public class EnemySystem extends IteratingSystem {
     private ComponentMapper<EnemyComponent> enemyComponent;
     private ComponentMapper<B2dBodyComponent> b2dComponent;
     private ComponentMapper<HealthComponent> enemyHealth;
-    private BodyFactory bodyFactory;
+    private LevelFactory levelFactory;
     private float timeSinceLastShot;
     private float shootDelay = 3f;
 
     @SuppressWarnings("unchecked")
-    public EnemySystem(BodyFactory bodyFact) {
+    public EnemySystem(LevelFactory levelFactory) {
         super(Family.all(EnemyComponent.class).get());
         enemyComponent = ComponentMapper.getFor(EnemyComponent.class);
         b2dComponent = ComponentMapper.getFor(B2dBodyComponent.class);
         enemyHealth = ComponentMapper.getFor(HealthComponent.class);
-        bodyFactory = bodyFact;
+        this.levelFactory = levelFactory;
     }
 
     @Override
@@ -49,7 +50,7 @@ public class EnemySystem extends IteratingSystem {
         if(this.timeSinceLastShot <= 0) {
 
             float bulletPadding = 0.7f;
-            bodyFactory.createBullet(
+            levelFactory.createBullet(
                         b2dComp.body.getPosition().x,
                         (b2dComp.body.getPosition().y-bulletPadding),
                         0, -3, BulletComponent.Owner.ENEMY
