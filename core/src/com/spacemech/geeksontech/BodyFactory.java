@@ -49,6 +49,7 @@ public class BodyFactory {
         boxBodyDef.position.x = x;
         boxBodyDef.position.y = y;
         boxBodyDef.fixedRotation = true;
+        boxBodyDef.gravityScale = 0.0f;
 
         //create the body to attach said definition
         Body boxBody = world.createBody(boxBodyDef);
@@ -65,8 +66,5 @@ public class BodyFactory {
         circleShape.dispose();
 
         return boxBody;
-
     }
-
-
 }

@@ -125,7 +125,6 @@ public class LevelFactory {
         position.position.set(5, 5, 0);
         b2dBodyComponent.body = bodyFactory.createOval(position.position.x, position.position.y, 1, true);
 
-
         b2dBodyComponent.body.setUserData(entity);
 
         entity.add(b2dBodyComponent);

@@ -54,7 +54,7 @@ public class MainGame implements Screen {
         engine.addSystem(new CollisionSystem());
 
         engine.addSystem(new EnemySystem(levelFactory));
-        engine.addSystem(new BulletSystem(levelFactory));
+        engine.addSystem(new BulletSystem(levelFactory, controller));
         engine.addSystem(new PlayerControlSystem(controller, levelFactory));
     }
 

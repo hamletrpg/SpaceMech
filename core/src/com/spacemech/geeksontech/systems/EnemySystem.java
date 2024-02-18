@@ -47,16 +47,16 @@ public class EnemySystem extends IteratingSystem {
             this.timeSinceLastShot -= deltaTime;
         }
 
-        if(this.timeSinceLastShot <= 0) {
-
-            float bulletPadding = 0.7f;
-            levelFactory.createBullet(
-                        b2dComp.body.getPosition().x,
-                        (b2dComp.body.getPosition().y-bulletPadding),
-                        0, -3, BulletComponent.Owner.ENEMY
-                );
-                this.timeSinceLastShot = this.shootDelay;
-            }
+//        if(this.timeSinceLastShot <= 0) {
+//
+//            float bulletPadding = 0.7f;
+//            levelFactory.createBullet(
+//                        b2dComp.body.getPosition().x,
+//                        (b2dComp.body.getPosition().y-bulletPadding),
+//                        0, -3, BulletComponent.Owner.ENEMY
+//                );
+//                this.timeSinceLastShot = this.shootDelay;
+//            }
 
 
         if (enemyHealthComp.health <= 0) {

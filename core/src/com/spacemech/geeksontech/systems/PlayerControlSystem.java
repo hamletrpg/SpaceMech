@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import com.spacemech.geeksontech.BodyFactory;
+import com.badlogic.gdx.math.Vector2;
 import com.spacemech.geeksontech.LevelFactory;
 import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
@@ -38,6 +38,7 @@ public class PlayerControlSystem extends IteratingSystem {
 
         if (b2body.body.getLinearVelocity().y != 0 && b2body.body.getLinearVelocity().x != 0) {
             state.set(StateComponent.STATE_MOVING);
+
         }
         if(controller.left){
             b2body.body.setLinearVelocity(MathUtils.lerp(b2body.body.getLinearVelocity().x, -5f, 0.2f),b2body.body.getLinearVelocity().y);
@@ -70,6 +71,9 @@ public class PlayerControlSystem extends IteratingSystem {
 
         if(controller.isMouse1Down) {
             if(player.timeSinceLastShot <= 0) {
+                Vector2 mouse_position = controller.mouseLocation;
+                Vector2 player_position = b2body.body.getPosition();
+                System.out.println(mouse_position.sub(player_position));
                 levelFactory.createBullet(
                         b2body.body.getPosition().x,
                         b2body.body.getPosition().y,

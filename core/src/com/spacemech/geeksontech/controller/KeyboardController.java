@@ -14,19 +14,19 @@ public class KeyboardController implements InputProcessor {
     public boolean keyDown(int keyCode) {
         boolean keyProcessed = false;
         switch (keyCode) {
-            case Keys.LEFT:
+            case Keys.A:
                 left = true;
                 keyProcessed = true;
                 break;
-            case Keys.RIGHT:
+            case Keys.D:
                 right = true;
                 keyProcessed = true;
                 break;
-            case Keys.UP:
+            case Keys.W:
                 up = true;
                 keyProcessed = true;
                 break;
-            case Keys.DOWN:
+            case Keys.S:
                 down = true;
                 keyProcessed = true;
                 break;
@@ -38,19 +38,19 @@ public class KeyboardController implements InputProcessor {
     public boolean keyUp(int keyCode) {
         boolean keyProcessed = false;
         switch (keyCode) {
-            case Keys.LEFT:
+            case Keys.A:
                 left = false;
                 keyProcessed = true;
                 break;
-            case Keys.RIGHT:
+            case Keys.D:
                 right = false;
                 keyProcessed = true;
                 break;
-            case Keys.UP:
+            case Keys.W:
                 up = false;
                 keyProcessed = true;
                 break;
-            case Keys.DOWN:
+            case Keys.S:
                 down = false;
                 keyProcessed = true;
                 break;
