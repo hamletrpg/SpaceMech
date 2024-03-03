@@ -3,6 +3,7 @@ package com.spacemech.geeksontech;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.spacemech.geeksontech.components.*;
@@ -110,7 +111,7 @@ public class LevelFactory {
         return entity;
     }
 
-    public Entity createPlayer() {
+    public Entity createPlayer(OrthographicCamera camera) {
         Entity entity = engine.createEntity();
         B2dBodyComponent b2dBodyComponent = engine.createComponent(B2dBodyComponent.class);
         TransformComponent position = engine.createComponent(TransformComponent.class);
@@ -120,6 +121,7 @@ public class LevelFactory {
         StateComponent stateComponent = engine.createComponent(StateComponent.class);
         HealthComponent health = engine.createComponent(HealthComponent.class);
 
+        player.cam = camera;
         type.type = TypeComponent.PLAYER;
         stateComponent.set(StateComponent.STATE_NORMAL);
         position.position.set(5, 5, 0);

@@ -4,9 +4,12 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.spacemech.geeksontech.LevelFactory;
+import com.spacemech.geeksontech.SpaceMech;
 import com.spacemech.geeksontech.components.*;
 import com.spacemech.geeksontech.controller.KeyboardController;
 
@@ -35,6 +38,7 @@ public class PlayerControlSystem extends IteratingSystem {
         StateComponent state = stateComponent.get(entity);
         PlayerComponent player = playerComponent.get(entity);
         HealthComponent playerHealthComp = playerHealth.get(entity);
+
 
         if (b2body.body.getLinearVelocity().y != 0 && b2body.body.getLinearVelocity().x != 0) {
             state.set(StateComponent.STATE_MOVING);
@@ -70,14 +74,36 @@ public class PlayerControlSystem extends IteratingSystem {
         }
 
         if(controller.isMouse1Down) {
+//            Vector3 mousePost = new Vector3(controller.mouseLocation.x, controller.mouseLocation.y, 0);
+//            float distanceX = mousePost.x - b2body.body.getPosition().x;
+//            float distanceY = mousePost.y - b2body.body.getPosition().y;
+//
+//            float angle = (float)Math.atan2(distanceY, distanceX);
+//            float velocityX = 10.0f * (float)Math.cos(angle);
+//            float velocityY = 10.0f * (float)Math.sin(angle);
+
+            Vector2 aim = new Vector2();
+            Vector3 mousePost = new Vector3(controller.mouseLocation.x, controller.mouseLocation.y, 0);
+            player.cam.unproject(mousePost);
+            float velx = mousePost.x - b2body.body.getPosition().x;
+            float vely = mousePost.y - b2body.body.getPosition().y;
+            float length = (float) Math.sqrt(velx * velx + vely * vely);
+            if (length != 0) {
+                aim.x = velx / length;
+                aim.y = vely / length;
+            }
+
+            System.out.println(mousePost);
+            System.out.println("player position: " + b2body.body.getTransform().getPosition());
+
+
+
             if(player.timeSinceLastShot <= 0) {
-                Vector2 mouse_position = controller.mouseLocation;
-                Vector2 player_position = b2body.body.getPosition();
-                System.out.println(mouse_position.sub(player_position));
+
                 levelFactory.createBullet(
                         b2body.body.getPosition().x,
                         b2body.body.getPosition().y,
-                        0, 10, BulletComponent.Owner.PLAYER
+                        aim.x * 10, aim.y * 10, BulletComponent.Owner.PLAYER
                 );
                 player.timeSinceLastShot = player.shootDelay;
             }

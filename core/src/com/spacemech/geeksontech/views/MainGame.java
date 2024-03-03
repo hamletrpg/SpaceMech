@@ -42,12 +42,12 @@ public class MainGame implements Screen {
         camera.update();
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
-        player = levelFactory.createPlayer();
-        enemy = levelFactory.createEnemy(
-                10,
-                10,
-                0, -1
-        );
+        player = levelFactory.createPlayer(camera);
+//        enemy = levelFactory.createEnemy(
+//                10,
+//                10,
+//                0, -1
+//        );
 
         engine.addSystem(new PhysicsSystem(levelFactory.world));
         engine.addSystem(new PhysicsDebugSystem(levelFactory.world, camera));
